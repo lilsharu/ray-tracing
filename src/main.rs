@@ -1,6 +1,7 @@
 use indicatif::ProgressBar;
 
 mod color;
+mod vector;
 
 fn main() {
     // Image
