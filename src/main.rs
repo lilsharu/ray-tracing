@@ -25,14 +25,10 @@ fn main() {
         for j in 0..image_width {
             bar.inc(1);
             let pixel = {
-                let r = f64::from(i) / f64::from(image_width - 1);
-                let g = f64::from(j) / f64::from(image_height - 1);
-                let b = 0f64;
-                color::RgbReal {
-                    red: r,
-                    green: g,
-                    blue: b,
-                }
+                let red = f64::from(i) / f64::from(image_width - 1);
+                let green = f64::from(j) / f64::from(image_height - 1);
+                let blue = 0f64;
+                color::RgbReal::new(red, green, blue)
             };
 
             let ppm_pixel: color::RgbInt = pixel.into();
