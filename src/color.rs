@@ -1,4 +1,4 @@
-use crate::vector::Vector3d;
+use crate::Vector3d;
 
 #[derive(Debug)]
 pub struct RgbReal {
