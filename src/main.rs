@@ -7,8 +7,18 @@ use crate::vector::vector::{Point3d, Vector3d};
 mod color;
 mod vector;
 
+fn lerp(a: f64, start_value: &RgbReal, end_value: &RgbReal) -> RgbReal {
+    RgbReal {
+        rgb: start_value.rgb * (1.0 - a) + end_value.rgb * a,
+    }
+}
+
 fn ray_color(ray: &Ray) -> RgbReal {
-    RgbReal::new(0.0, 0.0, 0.0)
+    let white: RgbReal = RgbReal::new(1.0, 1.0, 1.0);
+    let blue: RgbReal = RgbReal::new(0.5, 0.7, 1.0);
+    let direction_normalized = ray.direction.normalized();
+    let a = (direction_normalized.y + 1.0) * 0.5;
+    lerp(a, &white, &blue)
 }
 
 fn main() {
@@ -26,13 +36,13 @@ fn main() {
 
     // Viewport Spanning Vectors
     let viewport_u = Vector3d::new(viewport_width, 0.0, 0.0);
-    let viewport_v = Vector3d::new(-viewport_height, 0.0, 0.0);
+    let viewport_v = Vector3d::new(0.0, -viewport_height, 0.0);
     let pixel_delta_u = viewport_u / f64::from(image_width);
     let pixel_delta_v = viewport_v / f64::from(image_height);
 
     // Upper Left Pixel
     let viewport_upper_left =
-        camera_center - Vector3d::new(0.0, 0.0, focal_length) - (viewport_u + viewport_v) / 2.0;
+        camera_center - Vector3d::new(0.0, 0.0, focal_length) - viewport_u / 2.0 - viewport_v / 2.0;
     let pixel00_location = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5;
 
     // Render
@@ -48,11 +58,12 @@ fn main() {
             .progress_chars("#>-"),
     );
 
-    for i in 0..image_height {
-        for j in 0..image_width {
+    for j in 0..image_height {
+        for i in 0..image_width {
             bar.inc(1);
             let pixel_center =
                 pixel00_location + pixel_delta_u * f64::from(i) + pixel_delta_v * f64::from(j);
+            // println!("Pixel Center: {pixel_center:?}");
             let ray_direction = pixel_center - camera_center;
             let ray = Ray::new(camera_center, ray_direction);
             let pixel_color = ray_color(&ray);
