@@ -8,6 +8,8 @@ pub struct Vector3d {
     pub z: f64,
 }
 
+pub type Point3d = Vector3d;
+
 impl Default for Vector3d {
     fn default() -> Self {
         Self {
