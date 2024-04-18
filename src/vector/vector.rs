@@ -52,7 +52,6 @@ impl Sub for Vector3d {
     }
 }
 
-
 impl SubAssign for Vector3d {
     fn sub_assign(&mut self, rhs: Self) {
         self.x -= rhs.x;
@@ -113,12 +112,12 @@ impl Vector3d {
     }
 
     /// The dot product of the vector and @rhs
-    fn dot(&self, rhs: &Self) -> f64 {
+    pub fn dot(&self, rhs: &Self) -> f64 {
         self.x * rhs.x + self.y * rhs.x + self.z * rhs.z
     }
 
     /// The cross product of the vector and @rhs
-    fn cross(&self, rhs: &Self) -> Vector3d {
+    pub fn cross(&self, rhs: &Self) -> Vector3d {
         Self {
             x: self.y * rhs.z - self.z * rhs.y,
             y: self.z * rhs.x - self.x * rhs.z,
@@ -129,20 +128,24 @@ impl Vector3d {
     /// The square of the magnitude of the vector
     ///
     /// Implemented as `self.dot(self)`
-    fn magnitude_squared(&self) -> f64 {
+    pub fn magnitude_squared(&self) -> f64 {
         self.dot(self)
     }
 
     /// The magnitude of the vector
-    fn magnitude(&self) -> f64 {
+    pub fn magnitude(&self) -> f64 {
         self.magnitude_squared().sqrt()
     }
 
-    fn unit(&self) -> Self {
+    pub fn unit(&self) -> Self {
         *self / self.magnitude()
     }
-    
-    fn normalize(&mut self) {
+
+    pub fn normalize(&mut self) {
         *self /= self.magnitude();
+    }
+
+    pub fn normalized(&self) -> Self {
+        *self / self.magnitude()
     }
 }
