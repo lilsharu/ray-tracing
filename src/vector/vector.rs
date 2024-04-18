@@ -142,7 +142,7 @@ impl Vector3d {
         *self / self.magnitude()
     }
     
-    fn unitify(&mut self) {
+    fn normalize(&mut self) {
         *self /= self.magnitude();
     }
 }
